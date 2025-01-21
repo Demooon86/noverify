@@ -77,6 +77,13 @@ func EnterNode(st *meta.ClassParseState, n ir.Node) {
 		st.CurrentClass = st.Namespace + `\` + n.TraitName.Value
 		st.CurrentParentClass = ""
 		st.CurrentParentInterfaces = nil
+	case *ir.EnumStmt:
+		st.IsTrait = false
+		st.IsInterface = false
+		st.IsEnum = true
+		st.CurrentClass = st.Namespace + `\` + n.EnumName.Value
+		st.CurrentParentClass = ""
+		st.CurrentParentInterfaces = nil
 	}
 }
 

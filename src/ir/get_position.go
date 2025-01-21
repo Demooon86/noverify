@@ -88,6 +88,8 @@ func GetPosition(n Node) *position.Position {
 		return n.Position
 	case *ClassStmt:
 		return n.Position
+	case *EnumStmt: return n.Position
+	case *EnumCaseStmt: return n.Position
 	case *CloneExpr:
 		return n.Position
 	case *CloseTagStmt:

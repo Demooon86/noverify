@@ -65,6 +65,7 @@ type fileMeta struct {
 	Scope             *meta.Scope
 	Classes           meta.ClassesMap
 	Traits            meta.ClassesMap
+	Enums             meta.EnumsMap
 	Functions         meta.FunctionsMap
 	Constants         meta.ConstantsMap
 	FunctionOverrides meta.FunctionsOverrideMap
@@ -160,6 +161,7 @@ func updateMetaInfo(info *meta.Info, filename string, m *fileMeta) {
 
 	info.AddFilenameNonLocked(filename)
 	info.AddClassesNonLocked(filename, m.Classes)
+	info.AddEnumsNonLocked(filename, m.Enums)
 	info.AddTraitsNonLocked(filename, m.Traits)
 	info.AddFunctionsNonLocked(filename, m.Functions)
 	info.AddConstantsNonLocked(filename, m.Constants)

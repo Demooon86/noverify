@@ -2320,8 +2320,52 @@ func (c *Converter) convNode(n ast.Vertex) ir.Node {
 		out.CloseAttributeTkn = n.CloseAttributeTkn
 		return out
 
-	case *ast.StmtEnum, *ast.EnumCase:
-		return &ir.NopStmt{}
+	case *ast.StmtEnum:
+		if n == nil {
+			return (*ir.EnumStmt)(nil)
+		}
+
+		out := &ir.EnumStmt{}
+		out.Position = n.Position
+		out.EnumTkn = n.EnumTkn
+		out.EnumName = c.convNode(n.Name).(*ir.Identifier)
+		out.OpenCurlyBracketTkn = n.OpenCurlyBracketTkn
+		out.CloseCurlyBracketTkn = n.CloseCurlyBracketTkn
+		out.Stmts = c.convNodeSlice(n.Stmts)
+
+		if n.AttrGroups != nil {
+			slice := make([]*ir.AttributeGroup, len(n.AttrGroups))
+			for i := range n.AttrGroups {
+				slice[i] = c.convNode(n.AttrGroups[i]).(*ir.AttributeGroup)
+			}
+			out.AttrGroups = slice
+		}
+
+		out.Doc = c.getPHPDoc(ir.GetFirstToken(out))
+
+		return out
+	case *ast.EnumCase:
+		if n == nil {
+			return (*ir.EnumCaseStmt)(nil)
+		}
+
+		out := &ir.EnumCaseStmt{}
+		out.Position = n.Position
+
+		if n.AttrGroups != nil {
+			slice := make([]*ir.AttributeGroup, len(n.AttrGroups))
+			for i := range n.AttrGroups {
+				slice[i] = c.convNode(n.AttrGroups[i]).(*ir.AttributeGroup)
+			}
+			out.AttrGroups = slice
+		}
+
+		out.CaseTkn = n.CaseTkn
+		out.CaseName = c.convNode(n.Name).(*ir.Identifier)
+		out.EqualTkn = n.EqualTkn
+		out.Expr = c.convNode(n.Expr)
+
+		return out
 	}
 
 	panic(fmt.Sprintf("unhandled type %T", n))

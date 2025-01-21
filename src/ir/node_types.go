@@ -1037,6 +1037,8 @@ type EnumStmt struct {
 	OpenCurlyBracketTkn  *token.Token
 	CloseCurlyBracketTkn *token.Token
 	Stmts                []Node
+
+	Doc phpdoc.Comment
 }
 
 // EnumCaseStmt is a `case $caseName = $Expr` statement.

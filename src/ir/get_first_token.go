@@ -2269,6 +2269,25 @@ func GetFirstToken(n Node) *token.Token {
 		if n.Expr != nil {
 			return GetFirstToken(n.Expr)
 		}
+
+	case *EnumStmt:
+		if n.AttrGroups != nil {
+			if n.AttrGroups[0] != nil {
+				return GetFirstToken(n.AttrGroups[0])
+			}
+		}
+		if n.EnumTkn != nil {
+			return n.EnumTkn
+		}
+		if n.EnumName != nil {
+			return GetFirstToken(n.EnumName)
+		}
+		if n.OpenCurlyBracketTkn != nil {
+			return n.OpenCurlyBracketTkn
+		}
+		if n.CloseCurlyBracketTkn != nil {
+			return n.CloseCurlyBracketTkn
+		}
 	default:
 		panic(fmt.Sprintf(`unhandled type %T`, n))
 	}

@@ -18,11 +18,13 @@ type Info struct {
 	allFiles                  map[string]bool
 	allTraits                 ClassesMap
 	allClasses                ClassesMap
+	allEnums                  EnumsMap
 	allFunctions              FunctionsMap
 	allConstants              ConstantsMap
 	allFunctionsOverrides     FunctionsOverrideMap
 	perFileTraits             map[string]ClassesMap
 	perFileClasses            map[string]ClassesMap
+	perFileEnums              map[string]EnumsMap
 	perFileFunctions          map[string]FunctionsMap
 	perFileConstants          map[string]ConstantsMap
 	internalFunctions         FunctionsMap
@@ -36,11 +38,13 @@ func NewInfo() *Info {
 		allFiles:              make(map[string]bool),
 		allTraits:             NewClassesMap(),
 		allClasses:            NewClassesMap(),
+		allEnums:              NewEnumsMap(),
 		allFunctions:          NewFunctionsMap(),
 		allConstants:          make(ConstantsMap),
 		allFunctionsOverrides: make(FunctionsOverrideMap),
 		perFileTraits:         make(map[string]ClassesMap),
 		perFileClasses:        make(map[string]ClassesMap),
+		perFileEnums:          make(map[string]EnumsMap),
 		perFileFunctions:      make(map[string]FunctionsMap),
 		perFileConstants:      make(map[string]ConstantsMap),
 	}
@@ -61,6 +65,9 @@ func (i *Info) Clone() *Info {
 	}
 	for key, value := range i.allClasses.H {
 		info.allClasses.H[key] = value
+	}
+	for key, value := range i.allEnums.H {
+		info.allEnums.H[key] = value
 	}
 	for key, value := range i.allFunctions.H {
 		info.allFunctions.H[key] = value
@@ -141,6 +148,10 @@ func (i *Info) NumConstants() int {
 
 func (i *Info) GetClass(nm string) (res ClassInfo, ok bool) {
 	return i.allClasses.Get(nm)
+}
+
+func (i *Info) GetEnum(nm string) (res EnumInfo, ok bool) {
+	return i.allEnums.Get(nm)
 }
 
 func (i *Info) GetTrait(nm string) (res ClassInfo, ok bool) {
@@ -397,6 +408,18 @@ func (i *Info) AddClassesNonLocked(filename string, m ClassesMap) {
 		prevClass, ok := allClasses[k]
 		if !ok || v.Pos.Length > prevClass.Pos.Length {
 			allClasses[k] = v
+		}
+	}
+}
+
+func (i *Info) AddEnumsNonLocked(filename string, m EnumsMap) {
+	i.perFileEnums[filename] = m
+
+	allEnums := i.allEnums.H
+	for k, v := range m.H {
+		prevClass, ok := allEnums[k]
+		if !ok || v.Pos.Length > prevClass.Pos.Length {
+			allEnums[k] = v
 		}
 	}
 }

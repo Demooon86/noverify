@@ -207,6 +207,22 @@ func (d *rootWalker) EnterNode(n ir.Node) (res bool) {
 
 		d.meta.Classes.Set(d.ctx.st.CurrentClass, cl)
 
+	case *ir.EnumStmt:
+		en := d.getEnum()
+
+		fmt.Printf("%#v\n\n", en)
+		d.checker.CheckCommentMisspellings(n.EnumName, n.Doc.Raw)
+		d.checker.CheckIdentMisspellings(n.EnumName)
+
+		doc := d.parseClassPHPDoc(n, n.Doc)
+		d.reportPHPDocErrors(doc.errs)
+		d.handleEnumDoc(doc, &en)
+
+		if doc.deprecated {
+			d.Report(n, LevelNotice, "deprecated", "Has deprecated class %s", n.EnumName.Value)
+		}
+
+		d.meta.Enums.Set(d.ctx.st.CurrentClass, en)
 	case *ir.TraitStmt:
 		d.currentClassNodeStack.Push(n)
 		d.checker.CheckKeywordCase(n, "trait")
@@ -893,6 +909,13 @@ func (d *rootWalker) handleClassDoc(doc classPHPDocParseResult, cl *meta.ClassIn
 	}
 }
 
+func (d *rootWalker) handleEnumDoc(doc classPHPDocParseResult, cl *meta.EnumInfo) {
+	cl.PackageInfo = meta.PackageInfo{
+		Name:     doc.packageName,
+		Internal: doc.internal,
+	}
+}
+
 func (d *rootWalker) parsePHPDocVar(doc phpdoc.Comment) (typesMap types.Map) {
 	for _, part := range doc.Parsed {
 		part, ok := part.(*phpdoc.TypeVarCommentPart)
@@ -1389,6 +1412,25 @@ func (d *rootWalker) getClass() meta.ClassInfo {
 	}
 
 	return cl
+}
+
+func (d *rootWalker) getEnum() meta.EnumInfo {
+	var m meta.EnumsMap
+
+	en, ok := m.Get(d.ctx.st.CurrentClass)
+
+	fmt.Printf("%#v", en)
+
+	if !ok {
+		en = meta.EnumInfo{
+			Pos:  d.getElementPos(d.currentClassNodeStack.Current()),
+			Name: d.ctx.st.CurrentClass,
+		}
+
+		m.Set(d.ctx.st.CurrentClass, en)
+	}
+
+	return en
 }
 
 func (d *rootWalker) parseStartPos(pos *position.Position) (startLn []byte, startChar int) {

@@ -1966,3 +1966,32 @@ func (n *YieldFromExpr) Walk(v Visitor) {
 	}
 	v.LeaveNode(n)
 }
+
+
+func (n *EnumStmt) Walk(v Visitor) {
+	if !v.EnterNode(n) {
+		return
+	}
+
+	for _, nn := range n.AttrGroups {
+		nn.Walk(v)
+	}
+
+	if n.EnumName != nil {
+		n.EnumName.Walk(v)
+	}
+
+	for _, nn := range n.Stmts {
+		nn.Walk(v)
+	}
+
+	v.LeaveNode(n)
+}
+
+func (n *EnumCaseStmt) Walk(v Visitor) {
+	if !v.EnterNode(n) {
+		return
+	}
+
+	v.LeaveNode(n)
+}

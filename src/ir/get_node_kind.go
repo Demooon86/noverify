@@ -48,6 +48,8 @@ const (
 	KindClassImplementsStmt
 	KindClassMethodStmt
 	KindClassStmt
+	KindEnumStmt
+	KindEnumCaseStmt
 	KindCloneExpr
 	KindCloseTagStmt
 	KindClosureExpr
@@ -254,6 +256,10 @@ func GetNodeKind(x Node) NodeKind {
 		return KindClassMethodStmt
 	case *ClassStmt:
 		return KindClassStmt
+	case *EnumStmt:
+		return KindEnumStmt
+	case *EnumCaseStmt:
+		return KindEnumCaseStmt
 	case *CloneExpr:
 		return KindCloneExpr
 	case *CloseTagStmt:

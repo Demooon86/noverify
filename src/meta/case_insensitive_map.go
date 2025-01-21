@@ -11,9 +11,16 @@ type lowercaseString string
 type ClassesMap struct {
 	H map[lowercaseString]ClassInfo
 }
+type EnumsMap struct {
+	H map[lowercaseString]EnumInfo
+}
 
 func NewClassesMap() ClassesMap {
 	return ClassesMap{H: make(map[lowercaseString]ClassInfo)}
+}
+
+func NewEnumsMap() EnumsMap {
+	return EnumsMap{H: make(map[lowercaseString]EnumInfo)}
 }
 
 func (m ClassesMap) Len() int           { return len(m.H) }
@@ -26,6 +33,15 @@ func (m ClassesMap) Get(name string) (ClassInfo, bool) {
 
 func (m ClassesMap) Set(name string, class ClassInfo) {
 	m.H[toLower(name)] = class
+}
+
+func (m EnumsMap) Set(name string, enum EnumInfo) {
+	m.H[toLower(name)] = enum
+}
+
+func (m EnumsMap) Get(name string) (EnumInfo, bool) {
+	res, ok := m.H[toLower(name)]
+	return res, ok
 }
 
 type FunctionsMap struct {

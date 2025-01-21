@@ -1689,3 +1689,21 @@ func (n *YieldFromExpr) IterateTokens(cb func(*token.Token) bool) {
 		return
 	}
 }
+
+func (n *EnumStmt) IterateTokens(cb func(*token.Token) bool) {
+	if !traverseToken(n.EnumTkn, cb) {
+		return
+	}
+	if !traverseToken(n.OpenCurlyBracketTkn, cb) {
+		return
+	}
+	if !traverseToken(n.CloseCurlyBracketTkn, cb) {
+		return
+	}
+}
+
+func (n *EnumCaseStmt) IterateTokens(cb func(*token.Token) bool) {
+	if !traverseToken(n.CaseTkn, cb) {
+		return
+	}
+}

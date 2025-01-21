@@ -188,6 +188,12 @@ type ConstInfo struct {
 	Value       ConstValue
 }
 
+type CaseInfo struct {
+	Pos   ElementPosition
+	Typ   types.Map
+	Value ConstValue
+}
+
 type ClassFlags uint8
 
 const (
@@ -218,11 +224,20 @@ func (info *ClassInfo) IsFinal() bool     { return info.Flags&ClassFinal != 0 }
 func (info *ClassInfo) IsShape() bool     { return info.Flags&ClassShape != 0 }
 func (info *ClassInfo) IsInterface() bool { return info.Flags&ClassInterface != 0 }
 
+type EnumInfo struct {
+	Pos   ElementPosition
+	Name  string
+	Cases CaseMap
+
+	PackageInfo
+}
+
 // TODO: rename it; it's not only class-related.
 type ClassParseState struct {
 	Info *Info
 
 	IsTrait                 bool
+	IsEnum                  bool
 	IsInterface             bool
 	Namespace               string
 	FunctionUses            map[string]string
@@ -237,6 +252,7 @@ type ClassParseState struct {
 type FunctionsOverrideMap map[string]FuncInfoOverride
 type PropertiesMap map[string]PropertyInfo
 type ConstantsMap map[string]ConstInfo
+type CaseMap map[string]CaseInfo
 
 type ElementPosition struct {
 	Filename  string
