@@ -1027,6 +1027,28 @@ type ConstantStmt struct {
 	Expr         Node
 }
 
+// EnumStmt is a named enum declaration
+type EnumStmt struct {
+	Position             *position.Position
+	AttrGroups           []*AttributeGroup
+	EnumTkn              *token.Token
+	EnumName             *Identifier
+	EnumType             Node
+	OpenCurlyBracketTkn  *token.Token
+	CloseCurlyBracketTkn *token.Token
+	Stmts                []Node
+}
+
+// EnumCaseStmt is a `case $caseName = $Expr` statement.
+type EnumCaseStmt struct {
+	Position   *position.Position
+	AttrGroups []*AttributeGroup
+	CaseTkn    *token.Token
+	CaseName   *Identifier
+	EqualTkn   *token.Token
+	Expr       Node
+}
+
 // ContinueStmt is a `continue $Expr` statement.
 type ContinueStmt struct {
 	Position     *position.Position
