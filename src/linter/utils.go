@@ -431,6 +431,7 @@ func resolveClassConstFetch(st *meta.ClassParseState, e *ir.ClassConstFetchExpr)
 	}
 
 	// Константы теперь могут быть не только в классах, но и в енумах
+	// TODO: реализовать поиск и проверку констант в enum типах
 
 	className, ok := solver.GetClassName(st, e.Class)
 	if !ok {
@@ -438,14 +439,10 @@ func resolveClassConstFetch(st *meta.ClassParseState, e *ir.ClassConstFetchExpr)
 	}
 
 	class, ok := st.Info.GetClass(className)
-	enum, ok2 := st.Info.GetEnum(className)
 
 	if ok {
 		className = class.Name
 	}
-
-	fmt.Printf("%#v - %#v\n\n", class.Name, ok)
-	fmt.Printf("%#v - %#v\n\n", enum.Name, ok2)
 
 	info, implClass, found := solver.FindConstant(st.Info, className, constName.Value)
 

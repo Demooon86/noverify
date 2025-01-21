@@ -208,9 +208,7 @@ func (d *rootWalker) EnterNode(n ir.Node) (res bool) {
 		d.meta.Classes.Set(d.ctx.st.CurrentClass, cl)
 
 	case *ir.EnumStmt:
-		en := d.getEnum()
-
-		fmt.Printf("%#v\n\n", en)
+		en := d.getEnum(n)
 		d.checker.CheckCommentMisspellings(n.EnumName, n.Doc.Raw)
 		d.checker.CheckIdentMisspellings(n.EnumName)
 
@@ -1414,20 +1412,20 @@ func (d *rootWalker) getClass() meta.ClassInfo {
 	return cl
 }
 
-func (d *rootWalker) getEnum() meta.EnumInfo {
-	var m meta.EnumsMap
+func (d *rootWalker) getEnum(stmt *ir.EnumStmt) meta.EnumInfo {
+	if d.meta.Enums.H == nil {
+		d.meta.Enums = meta.NewEnumsMap()
+	}
 
-	en, ok := m.Get(d.ctx.st.CurrentClass)
-
-	fmt.Printf("%#v", en)
+	en, ok := d.meta.Enums.Get(d.ctx.st.CurrentClass)
 
 	if !ok {
 		en = meta.EnumInfo{
-			Pos:  d.getElementPos(d.currentClassNodeStack.Current()),
+			Pos:  d.getElementPos(stmt),
 			Name: d.ctx.st.CurrentClass,
 		}
 
-		m.Set(d.ctx.st.CurrentClass, en)
+		d.meta.Enums.Set(d.ctx.st.CurrentClass, en)
 	}
 
 	return en
