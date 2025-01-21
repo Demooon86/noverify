@@ -1,9 +1,9 @@
 module github.com/VKCOM/noverify
 
-go 1.21
+go 1.23
 
 require (
-	github.com/VKCOM/php-parser v0.8.0-rc.2.0.20210802093708-d85f5a481602
+	github.com/VKCOM/php-parser v0.8.2
 	github.com/client9/misspell v0.3.4
 	github.com/google/go-cmp v0.6.0
 	github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00
