@@ -2366,6 +2366,20 @@ func (c *Converter) convNode(n ast.Vertex) ir.Node {
 		out.Expr = c.convNode(n.Expr)
 
 		return out
+	case *ast.Intersection:
+		if n == nil {
+			return (*ir.Intersection)(nil)
+		}
+		out := &ir.Intersection{}
+		out.Position = n.Position
+		out.SeparatorTkns = n.SeparatorTkns
+
+		out.Types = make([]*ir.Name, 0)
+		for _, vertex := range n.Types {
+			out.Types = append(out.Types, c.convNode(vertex).(*ir.Name))
+		}
+
+		return out
 	}
 
 	panic(fmt.Sprintf("unhandled type %T", n))

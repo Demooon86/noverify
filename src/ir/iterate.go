@@ -1707,3 +1707,7 @@ func (n *EnumCaseStmt) IterateTokens(cb func(*token.Token) bool) {
 		return
 	}
 }
+
+func (n *Intersection) IterateTokens(cb func(*token.Token) bool) {
+	return
+}

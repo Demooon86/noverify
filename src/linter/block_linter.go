@@ -1426,7 +1426,6 @@ func (b *blockLinter) checkStaticPropertyFetch(e *ir.StaticPropertyFetchExpr) {
 }
 
 func (b *blockLinter) checkConstOrCaseFetch(e *ir.ClassConstFetchExpr) {
-	fmt.Printf("Is enum: %t\n", b.classParseState().IsEnum)
 	if b.classParseState().IsEnum {
 		b.checkEnumCaseFetch(e)
 	} else {

@@ -4,7 +4,11 @@ AFTER_COMMIT=`git rev-parse HEAD`
 GOPATH_DIR=`go env GOPATH`
 BIN_NAME=noverify
 PKG=github.com/VKCOM/noverify/src/cmd
-VERSION=0.5.3
+VERSION=0.5.4
+CGO_ENABLED=0
+GOOS=linux
+GOARCH=amd64
+
 
 install:
 	go install -ldflags "-X '$(PKG).BuildVersion=$(VERSION)' -X '$(PKG).BuildTime=$(NOW)' -X '$(PKG).BuildOSUname=$(OS)' -X '$(PKG).BuildCommit=$(AFTER_COMMIT)'" .

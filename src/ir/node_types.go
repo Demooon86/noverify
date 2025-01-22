@@ -1619,3 +1619,9 @@ type ThrowExpr struct {
 	Expr         Node
 	SemiColonTkn *token.Token
 }
+
+type Intersection struct {
+	Position      *position.Position
+	Types         []*Name
+	SeparatorTkns []*token.Token
+}
