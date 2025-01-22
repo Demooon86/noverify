@@ -601,6 +601,33 @@ func findConstant(info *meta.Info, className, constName string, visitedClasses m
 	}
 }
 
+// FindEnumCases searches for a case in specified enum and returns actual class that contains the constant.
+func FindEnumCases(info *meta.Info, enumName string, constName string) (meta.CaseInfo, bool) {
+	return findEnumCases(info, enumName, constName)
+}
+
+func findEnumCases(info *meta.Info, enumName, constName string) (meta.CaseInfo, bool) {
+	for {
+		enum, ok := info.GetEnum(enumName)
+
+		if !ok {
+			return meta.CaseInfo{}, false
+		}
+
+		r, ok := enum.Cases[constName]
+		if ok {
+			return meta.CaseInfo{
+				Pos:         r.Pos,
+				Typ:         r.Typ,
+				AccessLevel: r.AccessLevel,
+				Value:       r.Value,
+			}, true
+		}
+
+		return meta.CaseInfo{}, false
+	}
+}
+
 func identityType(typ string) map[string]struct{} {
 	res := make(map[string]struct{})
 	res[typ] = struct{}{}

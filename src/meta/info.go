@@ -185,6 +185,10 @@ func (i *Info) NumFunctions() int {
 	return i.allFunctions.Len()
 }
 
+func (i *Info) NumEnums() int {
+	return i.allEnums.Len()
+}
+
 func (i *Info) NumFilesWithFunctions() int {
 	return len(i.perFileFunctions)
 }
@@ -417,8 +421,8 @@ func (i *Info) AddEnumsNonLocked(filename string, m EnumsMap) {
 
 	allEnums := i.allEnums.H
 	for k, v := range m.H {
-		prevClass, ok := allEnums[k]
-		if !ok || v.Pos.Length > prevClass.Pos.Length {
+		prevEnum, ok := allEnums[k]
+		if !ok || v.Pos.Length > prevEnum.Pos.Length {
 			allEnums[k] = v
 		}
 	}

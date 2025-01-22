@@ -35,6 +35,7 @@ func (m ClassesMap) Set(name string, class ClassInfo) {
 	m.H[toLower(name)] = class
 }
 
+func (m EnumsMap) Len() int { return len(m.H) }
 func (m EnumsMap) Set(name string, enum EnumInfo) {
 	m.H[toLower(name)] = enum
 }

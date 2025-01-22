@@ -411,31 +411,36 @@ func resolveStaticPropertyFetch(st *meta.ClassParseState, e *ir.StaticPropertyFe
 	}
 }
 
-type classPropertyFetchInfo struct {
-	constName     string
+type classConstFetchInfo struct {
 	className     string
+	constName     string
 	implClassName string
 	info          meta.ConstInfo
 	isFound       bool
 	canAnalyze    bool
 }
 
-func resolveClassConstFetch(st *meta.ClassParseState, e *ir.ClassConstFetchExpr) classPropertyFetchInfo {
+type enumCaseFetchInfo struct {
+	enumName   string
+	caseName   string
+	info       meta.CaseInfo
+	isFound    bool
+	canAnalyze bool
+}
+
+func resolveClassConstFetch(st *meta.ClassParseState, e *ir.ClassConstFetchExpr) classConstFetchInfo {
 	if !st.Info.IsIndexingComplete() {
-		return classPropertyFetchInfo{canAnalyze: false}
+		return classConstFetchInfo{canAnalyze: false}
 	}
 
 	constName := e.ConstantName
 	if constName.Value == `class` || constName.Value == `CLASS` {
-		return classPropertyFetchInfo{canAnalyze: false}
+		return classConstFetchInfo{canAnalyze: false}
 	}
-
-	// Константы теперь могут быть не только в классах, но и в енумах
-	// TODO: реализовать поиск и проверку констант в enum типах
 
 	className, ok := solver.GetClassName(st, e.Class)
 	if !ok {
-		return classPropertyFetchInfo{canAnalyze: false}
+		return classConstFetchInfo{canAnalyze: false}
 	}
 
 	class, ok := st.Info.GetClass(className)
@@ -446,13 +451,43 @@ func resolveClassConstFetch(st *meta.ClassParseState, e *ir.ClassConstFetchExpr)
 
 	info, implClass, found := solver.FindConstant(st.Info, className, constName.Value)
 
-	return classPropertyFetchInfo{
+	return classConstFetchInfo{
 		constName:     constName.Value,
 		className:     className,
 		implClassName: implClass,
 		info:          info,
 		isFound:       found,
 		canAnalyze:    true,
+	}
+}
+
+// resolveEnumConstFetch Константы теперь могут быть не только в классах, но и в енумах
+// TODO: реализовать поиск и проверку констант в enum типах
+func resolveEnumConstFetch(st *meta.ClassParseState, e *ir.ClassConstFetchExpr) enumCaseFetchInfo {
+	if !st.Info.IsIndexingComplete() {
+		return enumCaseFetchInfo{canAnalyze: false}
+	}
+	enumName, ok := solver.GetClassName(st, e.Class)
+	caseName := e.ConstantName
+
+	if !ok {
+		return enumCaseFetchInfo{canAnalyze: false}
+	}
+
+	enum, ok := st.Info.GetEnum(enumName)
+
+	if ok {
+		enumName = enum.Name
+	}
+
+	info, found := solver.FindEnumCases(st.Info, enumName, caseName.Value)
+
+	return enumCaseFetchInfo{
+		caseName:   caseName.Value,
+		enumName:   enumName,
+		info:       info,
+		isFound:    found,
+		canAnalyze: true,
 	}
 }
 

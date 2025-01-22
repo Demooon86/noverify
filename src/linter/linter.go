@@ -71,8 +71,8 @@ func (l *Linter) analyzeFiles(readFileNamesFunc workspace.ReadCallback, allowDis
 		l.info.Lock()
 		defer l.info.Unlock()
 
-		lintdebug.Send("Funcs: %d, consts: %d, files: %d",
-			l.info.NumFunctions(), l.info.NumConstants(), l.info.NumFilesWithFunctions())
+		lintdebug.Send("Funcs: %d, consts: %d, enums: %d, files: %d",
+			l.info.NumFunctions(), l.info.NumConstants(), l.info.NumEnums(), l.info.NumFilesWithFunctions())
 	}()
 
 	needReports := l.info.IsIndexingComplete()

@@ -62,7 +62,8 @@ func (b *blockLinter) enterNode(n ir.Node) {
 		b.checkStaticPropertyFetch(n)
 
 	case *ir.ClassConstFetchExpr:
-		b.checkClassConstFetch(n)
+		//b.checkClassConstFetch(n)
+		b.checkConstOrCaseFetch(n)
 
 	case *ir.NewExpr:
 		b.checkNew(n)
@@ -1421,6 +1422,35 @@ func (b *blockLinter) checkStaticPropertyFetch(e *ir.StaticPropertyFetchExpr) {
 
 	if fetch.isFound && !canAccess(b.classParseState(), fetch.info.ClassName, fetch.info.Info.AccessLevel) {
 		b.report(e.Property, LevelError, "accessLevel", "Cannot access %s property %s::$%s", fetch.info.Info.AccessLevel, fetch.info.ClassName, fetch.propertyName)
+	}
+}
+
+func (b *blockLinter) checkConstOrCaseFetch(e *ir.ClassConstFetchExpr) {
+	fmt.Printf("Is enum: %t\n", b.classParseState().IsEnum)
+	if b.classParseState().IsEnum {
+		b.checkEnumCaseFetch(e)
+	} else {
+		b.checkClassConstFetch(e)
+	}
+}
+
+func (b *blockLinter) checkEnumCaseFetch(e *ir.ClassConstFetchExpr) {
+	fetch := resolveEnumConstFetch(b.classParseState(), e)
+	if !fetch.canAnalyze {
+		return
+	}
+
+	b.checkClassSpecialNameCase(e, fetch.enumName)
+
+	if !utils.IsSpecialClassName(e.Class) {
+		usedEnumName, ok := solver.GetClassName(b.classParseState(), e.Class)
+		if ok {
+			b.walker.r.checker.CheckNameCase(e.Class, usedEnumName, fetch.enumName)
+		}
+	}
+
+	if !fetch.isFound {
+		b.report(e.ConstantName, LevelError, "undefinedConstant", "Enum case %s::%s does not exist", fetch.enumName, fetch.caseName)
 	}
 }
 

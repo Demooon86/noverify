@@ -208,10 +208,11 @@ func (d *rootWalker) EnterNode(n ir.Node) (res bool) {
 		d.meta.Classes.Set(d.ctx.st.CurrentClass, cl)
 
 	case *ir.EnumStmt:
-		en := d.getEnum(n)
+		d.currentClassNodeStack.Push(n)
+		en := d.getEnum()
+
 		d.checker.CheckCommentMisspellings(n.EnumName, n.Doc.Raw)
 		d.checker.CheckIdentMisspellings(n.EnumName)
-
 		doc := d.parseClassPHPDoc(n, n.Doc)
 		d.reportPHPDocErrors(doc.errs)
 		d.handleEnumDoc(doc, &en)
@@ -221,6 +222,18 @@ func (d *rootWalker) EnterNode(n ir.Node) (res bool) {
 		}
 
 		d.meta.Enums.Set(d.ctx.st.CurrentClass, en)
+	case *ir.EnumCaseStmt:
+		enum := d.getEnum()
+
+		nm := n.CaseName.Value
+		typ := solver.ExprTypeLocal(d.scope(), d.ctx.st, n.Expr)
+		value := constfold.Eval(d.ctx.st, n.Expr)
+
+		enum.Cases[nm] = meta.CaseInfo{
+			Pos:   d.getElementPos(n),
+			Typ:   typ.Immutable(),
+			Value: value,
+		}
 	case *ir.TraitStmt:
 		d.currentClassNodeStack.Push(n)
 		d.checker.CheckKeywordCase(n, "trait")
@@ -296,7 +309,7 @@ func (d *rootWalker) LeaveNode(n ir.Node) {
 	}
 
 	switch n.(type) {
-	case *ir.ClassStmt, *ir.InterfaceStmt, *ir.TraitStmt, *ir.AnonClassExpr:
+	case *ir.ClassStmt, *ir.InterfaceStmt, *ir.TraitStmt, *ir.AnonClassExpr, *ir.EnumStmt:
 		d.getClass() // populate classes map
 
 		d.currentClassNodeStack.Pop()
@@ -1412,7 +1425,7 @@ func (d *rootWalker) getClass() meta.ClassInfo {
 	return cl
 }
 
-func (d *rootWalker) getEnum(stmt *ir.EnumStmt) meta.EnumInfo {
+func (d *rootWalker) getEnum() meta.EnumInfo {
 	if d.meta.Enums.H == nil {
 		d.meta.Enums = meta.NewEnumsMap()
 	}
@@ -1421,8 +1434,9 @@ func (d *rootWalker) getEnum(stmt *ir.EnumStmt) meta.EnumInfo {
 
 	if !ok {
 		en = meta.EnumInfo{
-			Pos:  d.getElementPos(stmt),
-			Name: d.ctx.st.CurrentClass,
+			Pos:   d.getElementPos(d.currentClassNodeStack.Current()),
+			Name:  d.ctx.st.CurrentClass,
+			Cases: make(meta.CaseMap),
 		}
 
 		d.meta.Enums.Set(d.ctx.st.CurrentClass, en)

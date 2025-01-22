@@ -47,6 +47,7 @@ func EnterNode(st *meta.ClassParseState, n ir.Node) {
 
 	case *ir.InterfaceStmt:
 		st.IsTrait = false
+		st.IsEnum = false
 		st.IsInterface = true
 		st.CurrentClass = st.Namespace + `\` + n.InterfaceName.Value
 		st.CurrentParentClass = ""
@@ -63,6 +64,7 @@ func EnterNode(st *meta.ClassParseState, n ir.Node) {
 	case *ir.ClassStmt:
 		// TODO: handle anonymous classes (they can be nested as well)
 		st.IsTrait = false
+		st.IsEnum = false
 		st.IsInterface = false
 		id := n.ClassName
 		st.CurrentClass = st.Namespace + `\` + id.Value
@@ -73,14 +75,15 @@ func EnterNode(st *meta.ClassParseState, n ir.Node) {
 		}
 	case *ir.TraitStmt:
 		st.IsTrait = true
+		st.IsEnum = false
 		st.IsInterface = false
 		st.CurrentClass = st.Namespace + `\` + n.TraitName.Value
 		st.CurrentParentClass = ""
 		st.CurrentParentInterfaces = nil
 	case *ir.EnumStmt:
 		st.IsTrait = false
-		st.IsInterface = false
 		st.IsEnum = true
+		st.IsInterface = false
 		st.CurrentClass = st.Namespace + `\` + n.EnumName.Value
 		st.CurrentParentClass = ""
 		st.CurrentParentInterfaces = nil

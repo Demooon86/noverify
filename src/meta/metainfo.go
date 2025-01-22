@@ -189,9 +189,10 @@ type ConstInfo struct {
 }
 
 type CaseInfo struct {
-	Pos   ElementPosition
-	Typ   types.Map
-	Value ConstValue
+	Pos         ElementPosition
+	Typ         types.Map
+	AccessLevel AccessLevel
+	Value       ConstValue
 }
 
 type ClassFlags uint8
