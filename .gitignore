@@ -3,6 +3,7 @@ phplinter.exe
 phplinter-output-*.json
 err.log
 src/cmd/stubs/phpstorm-stubs/
+build
 y.output
 .idea
 vendor
