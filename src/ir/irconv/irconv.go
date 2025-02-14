@@ -1440,6 +1440,7 @@ func (c *Converter) convNode(n ast.Vertex) ir.Node {
 			out.AttrGroups = slice
 		}
 
+		out.ConstType = c.convNode(n.ConstType)
 		out.ConstTkn = n.ConstTkn
 		out.SeparatorTkns = n.SeparatorTkns
 		out.SemiColonTkn = n.SemiColonTkn

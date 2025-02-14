@@ -965,6 +965,7 @@ type ClassConstListStmt struct {
 	AttrGroups    []*AttributeGroup
 	Modifiers     []*Identifier
 	ConstTkn      *token.Token
+	ConstType     Node
 	Consts        []Node
 	SeparatorTkns []*token.Token
 	SemiColonTkn  *token.Token
