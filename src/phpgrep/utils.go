@@ -3,7 +3,7 @@ package phpgrep
 import (
 	"strconv"
 
-	"github.com/VKCOM/php-parser/pkg/position"
+	"github.com/Demooon86/php-parser/pkg/position"
 
 	"github.com/VKCOM/noverify/src/ir"
 )

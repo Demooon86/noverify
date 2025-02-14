@@ -31,6 +31,15 @@ func TypeHintTypes(typeNode ir.Node) []Type {
 	var results []Type
 
 	switch n := typeNode.(type) {
+	case *ir.Intersection:
+		results = make([]Type, 0, len(n.Types))
+
+		for _, unionTyp := range n.Types {
+			results = append(results, handleSingleType(unionTyp))
+		}
+
+		return results
+
 	case *ir.Union:
 		results = make([]Type, 0, len(n.Types))
 

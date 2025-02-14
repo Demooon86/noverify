@@ -1,3 +1,4 @@
+github.com/Demooon86/php-parser v0.8.0-rc.2.0.20210802093708-d85f5a481602/go.mod h1:wLtaD4M5K8bJPwjkl4BVone8dbMiG1OApbMKdjubCEw=
 github.com/VKCOM/noverify v0.4.0/go.mod h1:4YqmJFxSi6Hw7kBiUZ7GzeQgqHLyxEopsSVhIf9/htA=
 github.com/VKCOM/php-parser v0.8.0-rc.2.0.20210802093708-d85f5a481602/go.mod h1:wLtaD4M5K8bJPwjkl4BVone8dbMiG1OApbMKdjubCEw=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=

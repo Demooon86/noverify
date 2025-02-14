@@ -3,7 +3,7 @@ package irutil
 import (
 	"bytes"
 
-	"github.com/VKCOM/php-parser/pkg/token"
+	"github.com/Demooon86/php-parser/pkg/token"
 
 	"github.com/VKCOM/noverify/src/ir"
 )

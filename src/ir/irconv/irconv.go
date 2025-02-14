@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/VKCOM/php-parser/pkg/ast"
-	"github.com/VKCOM/php-parser/pkg/position"
-	"github.com/VKCOM/php-parser/pkg/token"
+	"github.com/Demooon86/php-parser/pkg/ast"
+	"github.com/Demooon86/php-parser/pkg/position"
+	"github.com/Demooon86/php-parser/pkg/token"
 
 	"github.com/VKCOM/noverify/src/ir"
 	"github.com/VKCOM/noverify/src/ir/irutil"
@@ -2395,7 +2395,14 @@ func (c *Converter) convertSliceNodeToPosition(list []ast.Vertex) *position.Posi
 	firstPos := list[0].GetPosition()
 	lastPos := list[len(list)-1].GetPosition()
 
-	return position.NewPosition(firstPos.StartLine, lastPos.EndLine, firstPos.StartPos, lastPos.EndPos)
+	return position.NewPosition(
+		firstPos.StartLine,
+		lastPos.EndLine,
+		firstPos.StartPos,
+		lastPos.EndPos,
+		firstPos.StartCol,
+		lastPos.EndCol,
+	)
 }
 
 // hasValue function is used to determine if the

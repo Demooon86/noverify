@@ -2,7 +2,7 @@
 package ir
 
 import (
-	"github.com/VKCOM/php-parser/pkg/token"
+	"github.com/Demooon86/php-parser/pkg/token"
 )
 
 func (n *AnonClassExpr) IterateTokens(cb func(*token.Token) bool) {

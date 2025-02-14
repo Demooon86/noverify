@@ -3,7 +3,7 @@ module github.com/VKCOM/noverify
 go 1.23
 
 require (
-	github.com/VKCOM/php-parser v0.8.2
+	github.com/Demooon86/php-parser v0.0.0-20250214164239-6eed5a7ed77a
 	github.com/client9/misspell v0.3.4
 	github.com/google/go-cmp v0.6.0
 	github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00

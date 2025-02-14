@@ -778,6 +778,10 @@ func (m *matcher) eqNode(state *matcherState, x, y ir.Node) bool {
 		y, ok := y.(*ir.TypeCastExpr)
 		return ok && x.Type == y.Type && m.eqNode(state, x.Expr, y.Expr)
 
+	case *ir.NullsafePropertyFetchExpr:
+		y, ok := y.(*ir.NullsafePropertyFetchExpr)
+		return ok && m.eqNode(state, x.Variable, y.Variable) && m.eqNode(state, x.Property, y.Property)
+
 	case *ir.Root:
 		return false
 

@@ -1426,7 +1426,13 @@ func (b *blockLinter) checkStaticPropertyFetch(e *ir.StaticPropertyFetchExpr) {
 }
 
 func (b *blockLinter) checkConstOrCaseFetch(e *ir.ClassConstFetchExpr) {
-	if b.classParseState().IsEnum {
+	enumName, ok := solver.GetClassName(b.classParseState(), e.Class)
+
+	if ok {
+		_, ok = b.classParseState().Info.GetEnum(enumName)
+	}
+
+	if ok {
 		b.checkEnumCaseFetch(e)
 	} else {
 		b.checkClassConstFetch(e)

@@ -4,7 +4,7 @@
 package ir
 
 import (
-	"github.com/VKCOM/php-parser/pkg/token"
+	"github.com/Demooon86/php-parser/pkg/token"
 )
 
 //go:generate go run ./codegen

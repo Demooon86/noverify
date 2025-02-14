@@ -9,9 +9,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/VKCOM/php-parser/pkg/ast"
-	"github.com/VKCOM/php-parser/pkg/position"
-	"github.com/VKCOM/php-parser/pkg/token"
+	"github.com/Demooon86/php-parser/pkg/ast"
+	"github.com/Demooon86/php-parser/pkg/position"
+	"github.com/Demooon86/php-parser/pkg/token"
 )
 
 func fullyQualifiedToString(n *ast.NameFullyQualified) string {
@@ -57,9 +57,16 @@ func namePartsToToken(parts []ast.Vertex) *token.Token {
 	endPos := parts[len(parts)-1].GetPosition()
 
 	return &token.Token{
-		ID:           token.T_STRING,
-		Value:        bytes.Join(valueParts, []byte(`\`)),
-		Position:     position.NewPosition(startPos.StartLine, endPos.EndLine, startPos.StartPos, endPos.EndPos),
+		ID:    token.T_STRING,
+		Value: bytes.Join(valueParts, []byte(`\`)),
+		Position: position.NewPosition(
+			startPos.StartLine,
+			endPos.EndLine,
+			startPos.StartPos,
+			endPos.EndPos,
+			startPos.StartCol,
+			endPos.EndCol,
+		),
 		FreeFloating: ff,
 	}
 }

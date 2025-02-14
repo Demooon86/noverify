@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/VKCOM/php-parser/pkg/position"
-	"github.com/VKCOM/php-parser/pkg/token"
+	"github.com/Demooon86/php-parser/pkg/position"
+	"github.com/Demooon86/php-parser/pkg/token"
 
 	"github.com/VKCOM/noverify/src/phpdoctypes"
 	"github.com/VKCOM/noverify/src/utils"

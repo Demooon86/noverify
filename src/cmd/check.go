@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/VKCOM/php-parser/pkg/version"
+	"github.com/Demooon86/php-parser/pkg/version"
 
 	"github.com/VKCOM/noverify/src/linter"
 )

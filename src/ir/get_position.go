@@ -3,7 +3,7 @@ package ir
 
 import (
 	"fmt"
-	"github.com/VKCOM/php-parser/pkg/position"
+	"github.com/Demooon86/php-parser/pkg/position"
 )
 
 func GetPosition(n Node) *position.Position {
@@ -330,6 +330,7 @@ func GetPosition(n Node) *position.Position {
 		return n.Position
 	case *YieldFromExpr:
 		return n.Position
+	case *Intersection: return n.Position
 	default:
 		panic(fmt.Sprintf(`unhandled type %T`, n))
 	}

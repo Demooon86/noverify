@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/VKCOM/php-parser/pkg/version"
+	"github.com/Demooon86/php-parser/pkg/version"
 	"github.com/client9/misspell"
 
 	"github.com/VKCOM/noverify/src/baseline"

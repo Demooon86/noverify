@@ -3,7 +3,7 @@ package ir
 
 import (
 	"fmt"
-	"github.com/VKCOM/php-parser/pkg/token"
+	"github.com/Demooon86/php-parser/pkg/token"
 )
 
 func GetFirstToken(n Node) *token.Token {

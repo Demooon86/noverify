@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/Demooon86/php-parser/pkg/position"
 	"github.com/VKCOM/noverify/src/ir"
 	"github.com/VKCOM/noverify/src/quickfix"
 	"github.com/VKCOM/noverify/src/workspace"
-	"github.com/VKCOM/php-parser/pkg/position"
 )
 
 type QuickFixGenerator struct {

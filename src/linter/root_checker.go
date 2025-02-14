@@ -3,6 +3,7 @@ package linter
 import (
 	"strings"
 
+	"github.com/Demooon86/php-parser/pkg/token"
 	"github.com/VKCOM/noverify/src/ir"
 	"github.com/VKCOM/noverify/src/ir/irutil"
 	"github.com/VKCOM/noverify/src/meta"
@@ -12,7 +13,6 @@ import (
 	"github.com/VKCOM/noverify/src/types"
 	"github.com/VKCOM/noverify/src/utils"
 	"github.com/VKCOM/noverify/src/workspace"
-	"github.com/VKCOM/php-parser/pkg/token"
 	"github.com/client9/misspell"
 )
 
