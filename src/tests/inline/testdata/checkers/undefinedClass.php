@@ -20,46 +20,46 @@ namespace ErrorsInTypehint {
 
   function definedClass(Foo $a, IFoo $b) {}
   function undefinedClass(
-    Foo1 $a,  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
-    IFoo1 $b, // want `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+    Foo1 $a,  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
+    IFoo1 $b, // want `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
   ) {}
 
   function nullableUndefinedClass(
-    ?Foo1 $a,  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
-    ?IFoo1 $b, // want `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+    ?Foo1 $a,  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
+    ?IFoo1 $b, // want `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
   ) {}
 
   function unionUndefinedClass(
-    Foo|Foo1 $a,  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
-    IFoo1|Foo $b, // want `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+    Foo|Foo1 $a,  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
+    IFoo1|Foo $b, // want `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
   ) {}
 
   function returnDefinedClass(): Foo {}
   function returnDefinedIface(): IFoo {}
 
-  function returnUndefinedClass(): Foo1 {}  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
-  function returnUndefinedIface(): IFoo1 {} // want `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+  function returnUndefinedClass(): Foo1 {}  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
+  function returnUndefinedIface(): IFoo1 {} // want `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
 
-  function returnNullableUndefinedClass(): ?Foo1 {}  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
+  function returnNullableUndefinedClass(): ?Foo1 {}  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
 
-  function returnUnionUndefinedClass(): Foo|Foo1 {}  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
+  function returnUnionUndefinedClass(): Foo|Foo1 {}  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
 
-  function returnUnionOfUndefinedClass(): IFoo1|Foo1 {}  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist` and `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
+  function returnUnionOfUndefinedClass(): IFoo1|Foo1 {}  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist` and `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
 
   class Test {
     public Foo $a;
     public IFoo $b;
 
-    public Foo1 $c;  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
-    public IFoo1 $d; // want `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+    public Foo1 $c;  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
+    public IFoo1 $d; // want `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
 
-    public ?Foo1 $c;  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
-    public ?IFoo1 $d; // want `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+    public ?Foo1 $c;  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
+    public ?IFoo1 $d; // want `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
 
-    public Foo1|Foo $e;  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist`
-    public Foo|IFoo1 $f; // want `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+    public Foo1|Foo $e;  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist`
+    public Foo|IFoo1 $f; // want `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
 
-    public Foo1|IFoo1 $g;  // want `Class or interface named \ErrorsInTypehint\Foo1 does not exist` and `Class or interface named \ErrorsInTypehint\IFoo1 does not exist`
+    public Foo1|IFoo1 $g;  // want `Class or interface or enum named \ErrorsInTypehint\Foo1 does not exist` and `Class or interface or enum named \ErrorsInTypehint\IFoo1 does not exist`
   }
 
   trait SingletonSelf {
@@ -96,20 +96,20 @@ namespace ErrorsInPHPDoc {
   function definedClass($a, $b) {}
 
   /**
-   * @param Foo1  $a // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
-   * @param IFoo1 $b // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+   * @param Foo1  $a // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
+   * @param IFoo1 $b // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
    */
   function undefinedClass($a, $b) {}
 
   /**
-   * @param ?Foo1  $a // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
-   * @param ?IFoo1 $b // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+   * @param ?Foo1  $a // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
+   * @param ?IFoo1 $b // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
    */
   function nullableUndefinedClass($a, $b) {}
 
   /**
-   * @param Foo|Foo1  $a // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
-   * @param IFoo1|Foo $b // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+   * @param Foo|Foo1  $a // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
+   * @param IFoo1|Foo $b // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
    */
   function unionUndefinedClass($a, $b) {}
 
@@ -123,26 +123,26 @@ namespace ErrorsInPHPDoc {
   function returnDefinedIface() {}
 
   /**
-   * @return Foo1 // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+   * @return Foo1 // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
    */
   function returnUndefinedClass() {}
   /**
-   * @return IFoo1 // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+   * @return IFoo1 // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
    */
   function returnUndefinedIface() {}
 
   /**
-   * @return ?Foo1 // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+   * @return ?Foo1 // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
    */
   function returnNullableUndefinedClass() {}
 
   /**
-   * @return Foo|Foo1  // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+   * @return Foo|Foo1  // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
    */
   function returnUnionUndefinedClass() {}
 
   /**
-   * @return IFoo1|Foo1 // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist` and `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+   * @return IFoo1|Foo1 // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist` and `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
    */
   function returnUnionOfUndefinedClass() {}
 
@@ -157,34 +157,34 @@ namespace ErrorsInPHPDoc {
     public $b;
 
     /**
-     * @var Foo1 // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+     * @var Foo1 // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
      */
     public $c;
     /**
-     * @var IFoo1 // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+     * @var IFoo1 // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
      */
     public $d;
 
     /**
-     * @var ?Foo1 // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+     * @var ?Foo1 // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
      */
     public $c;
     /**
-     * @var ?IFoo1 // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+     * @var ?IFoo1 // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
      */
     public $d;
 
     /**
-     * @var Foo1|Foo // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+     * @var Foo1|Foo // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
      */
     public $e;
     /**
-     * @var Foo|IFoo1 // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+     * @var Foo|IFoo1 // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
      */
     public $f;
 
     /**
-     * @var Foo1|IFoo1 // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist` and `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+     * @var Foo1|IFoo1 // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist` and `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
      */
     public $g;
   }
@@ -212,22 +212,22 @@ namespace ErrorsInPHPDoc {
 
 
     /**
-     * @var Foo1 // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+     * @var Foo1 // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
      */
     $a = 100;
 
     /**
-     * @var Foo1 $a // want `Class or interface named \ErrorsInPHPDoc\Foo1 does not exist`
+     * @var Foo1 $a // want `Class or interface or enum named \ErrorsInPHPDoc\Foo1 does not exist`
      */
     $a = 100;
 
     /**
-     * @var IFoo1 // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+     * @var IFoo1 // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
      */
     $a = 100;
 
     /**
-     * @var IFoo1 $a // want `Class or interface named \ErrorsInPHPDoc\IFoo1 does not exist`
+     * @var IFoo1 $a // want `Class or interface or enum named \ErrorsInPHPDoc\IFoo1 does not exist`
      */
     $a = 100;
 
@@ -272,7 +272,7 @@ namespace ErrorInComplexTypes {
   function definedClass($a) {}
 
   /**
-   * @param shape(key: Foo1, val: IFoo1) $a // want `Class or interface named \ErrorInComplexTypes\Foo1 does not exist` and `Class or interface named \ErrorInComplexTypes\IFoo1 does not exist`
+   * @param shape(key: Foo1, val: IFoo1) $a // want `Class or interface or enum named \ErrorInComplexTypes\Foo1 does not exist` and `Class or interface or enum named \ErrorInComplexTypes\IFoo1 does not exist`
    */
   function undefinedClass($a) {}
 
@@ -282,7 +282,7 @@ namespace ErrorInComplexTypes {
   function definedClassWithUse($a) {}
 
   /**
-   * @param shape(key: Boo1) $a // want `Class or interface named \ErrorInComplexTypes\Boo1 does not exist`
+   * @param shape(key: Boo1) $a // want `Class or interface or enum named \ErrorInComplexTypes\Boo1 does not exist`
    */
   function undefinedClassWithUse($a) {}
 
@@ -292,7 +292,7 @@ namespace ErrorInComplexTypes {
   function definedClassWithUseAlias($a) {}
 
   /**
-   * @param shape(key: BooG1) $a // want `Class or interface named \ErrorInComplexTypes\BooG1 does not exist`
+   * @param shape(key: BooG1) $a // want `Class or interface or enum named \ErrorInComplexTypes\BooG1 does not exist`
    */
   function undefinedClassWithUseAlias($a) {}
 
@@ -302,7 +302,7 @@ namespace ErrorInComplexTypes {
   function definedClassWithArray($a) {}
 
   /**
-   * @param Foo1[] $a // want `Class or interface named \ErrorInComplexTypes\Foo1 does not exist`
+   * @param Foo1[] $a // want `Class or interface or enum named \ErrorInComplexTypes\Foo1 does not exist`
    */
   function undefinedClassWithArray($a) {}
 

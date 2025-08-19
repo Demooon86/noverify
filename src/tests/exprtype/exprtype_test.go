@@ -3514,7 +3514,7 @@ func runExprTypeTest(t *testing.T, params *exprTypeTestParams) {
 }
 
 func exprTypeTestImpl(t *testing.T, params *exprTypeTestParams, kphp bool) {
-	config := linter.NewConfig("8.1")
+	config := linter.NewConfig("8.3")
 	if params.php7 {
 		config = linter.NewConfig("7.4")
 	}

@@ -390,7 +390,7 @@ func (r *rootChecker) checkUndefinedClass(className string, part phpdoc.CommentP
 
 	r.walker.ReportPHPDoc(PHPDocLineField(n, part.Line(), partNum),
 		LevelError, "undefinedClass",
-		"Class or interface named %s does not exist", className,
+		"Class or interface or enum named %s does not exist", className,
 	)
 }
 
@@ -570,11 +570,11 @@ func (r *rootChecker) CheckTypeHintNode(n ir.Node, place string) {
 				r.walker.Report(n, LevelWarning, "badTraitUse", "Cannot use trait %s as a typehint for %s", strings.TrimPrefix(className, `\`), place)
 			}
 
-			class, hasClass := r.info.GetClass(className)
+			class, ok := r.info.GetObjectType(className)
 
-			if !hasClass && !hasTrait {
+			if !ok {
 				r.walker.Report(n, LevelError, "undefinedClass",
-					"Class or interface named %s does not exist", className,
+					"Class or interface or enum named %s does not exist", className,
 				)
 			}
 
@@ -981,7 +981,7 @@ func (r *rootChecker) checkImplementedStep(classNode, name ir.Node, className st
 }
 
 func (r *rootChecker) ReportUndefinedClass(n ir.Node, name string) {
-	r.walker.Report(n, LevelError, "undefinedClass", "Class or interface named %s does not exist", name)
+	r.walker.Report(n, LevelError, "undefinedClass", "Class or interface or enum named %s does not exist", name)
 }
 
 func (r *rootChecker) ReportUndefinedTrait(n ir.Node, name string) {

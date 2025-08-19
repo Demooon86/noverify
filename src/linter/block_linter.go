@@ -552,19 +552,16 @@ func (b *blockLinter) checkNew(e *ir.NewExpr) {
 		args = e.Args
 	}
 
-	class, ok := b.metaInfo().GetClass(className)
-	if !ok {
-		class, ok = b.metaInfo().GetTrait(className)
-		if ok {
-			b.report(e.Class, LevelError, "invalidNew", "Cannot instantiate trait %s", class.Name)
-		} else {
-			b.report(e.Class, LevelError, "undefinedClass", "Class or interface named %s does not exist", className)
-		}
-	} else {
+	class, ok := b.metaInfo().GetObjectType(className)
+	if ok {
 		if class.IsInterface() {
 			b.report(e.Class, LevelError, "invalidNew", "Cannot instantiate interface %s", class.Name)
+		} else if class.IsTrait() {
+			b.report(e.Class, LevelError, "invalidNew", "Cannot instantiate trait %s", class.Name)
 		}
 		b.walker.r.checker.CheckNameCase(e.Class, className, class.Name)
+	} else {
+		b.report(e.Class, LevelError, "undefinedClass", "Class or interface or enum named %s does not exist", className)
 	}
 
 	// It's illegal to instantiate abstract class, but `static` can

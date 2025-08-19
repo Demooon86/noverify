@@ -100,6 +100,34 @@ class Foo {
 	runPHP8ExprTypeTest(t, &exprTypeTestParams{code: code})
 }
 
+func TestEnumType(t *testing.T) {
+	code := `<?php
+enum PushTemplateStatus: string
+{
+    case DRAFT = 'draft';
+    case PLANNED = 'planned';
+    case IN_PROGRESS = 'in_progress';
+    case SENT = 'sent';
+
+    public static function values(): array
+    {
+        return array_map(fn(self $case) => $case->value, self::cases());
+    }
+
+    public function getTranslateStatus(): string
+    {
+        return match($this) {
+            self::DRAFT => 'Черновик',
+            self::PLANNED => 'Запланировано',
+            self::IN_PROGRESS => 'В процессе',
+            self::SENT => 'Отправлено',
+        };
+    }
+}
+`
+	runPHP8ExprTypeTest(t, &exprTypeTestParams{code: code})
+}
+
 func runPHP8ExprTypeTest(t *testing.T, params *exprTypeTestParams) {
 	exprTypeTestImpl(t, params, false)
 }

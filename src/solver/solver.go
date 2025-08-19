@@ -349,9 +349,24 @@ func findMethod(info *meta.Info, className, methodName string, visitedMap map[st
 		}
 		visitedMap[className] = struct{}{}
 
-		class, ok := getClassOrTrait(info, className)
+		class, ok := getClassOrTraitOrEnum(info, className)
 		if !ok {
 			break
+		}
+
+		// В енумах есть встроенный статический метод cases
+		if class.IsEnum() {
+			switch methodName {
+			case "cases":
+				return FindMethodResult{
+					Info: meta.FuncInfo{
+						Name:  methodName,
+						Flags: meta.FuncStatic,
+					},
+					ClassName:   className,
+					Implemented: true,
+				}, true
+			}
 		}
 
 		methodInfo, ok := class.Methods.Get(methodName)
@@ -395,7 +410,7 @@ func findMethod(info *meta.Info, className, methodName string, visitedMap map[st
 		}
 
 		for _, mixin := range class.Mixins {
-			_, ok := getClassOrTrait(info, mixin)
+			_, ok := getClassOrTraitOrEnum(info, mixin)
 			if !ok {
 				continue
 			}
@@ -452,7 +467,20 @@ func findProperty(info *meta.Info, className, propertyName string, visitedMap ma
 		}
 		visitedMap[className] = struct{}{}
 
-		class, ok := getClassOrTrait(info, className)
+		class, ok := getClassOrTraitOrEnum(info, className)
+
+		if class.IsEnum() {
+			switch propertyName {
+			case "value":
+				return FindPropertyResult{
+					Info: meta.PropertyInfo{
+						AccessLevel: meta.Public,
+					},
+					ClassName: className,
+				}, true
+			}
+		}
+
 		if !ok || class.IsShape() {
 			return result, false
 		}
@@ -634,7 +662,7 @@ func identityType(typ string) map[string]struct{} {
 	return res
 }
 
-func getClassOrTrait(info *meta.Info, typeName string) (meta.ClassInfo, bool) {
+func getClassOrTraitOrEnum(info *meta.Info, typeName string) (meta.ClassInfo, bool) {
 	class, ok := info.GetClass(typeName)
 	if ok {
 		return class, true
@@ -642,6 +670,10 @@ func getClassOrTrait(info *meta.Info, typeName string) (meta.ClassInfo, bool) {
 	trait, ok := info.GetTrait(typeName)
 	if ok {
 		return trait, true
+	}
+	enum, ok := info.GetEnum(typeName)
+	if ok {
+		return enum, true
 	}
 	return class, false
 }

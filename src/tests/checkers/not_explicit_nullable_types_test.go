@@ -327,7 +327,7 @@ class SomeClass {
 		"Specify the type for the parameter $participation_statuses_data",
 		"Expression evaluated but not used",
 		"Variable $participation_statuses_data is unused",
-		"Class or interface named \\Date does not exist",
+		"Class or interface or enum named \\Date does not exist",
 	}
 
 	test.RunAndMatch()

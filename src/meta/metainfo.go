@@ -202,6 +202,8 @@ const (
 	ClassFinal
 	ClassShape
 	ClassInterface
+	ClassEnum
+	ClassTrait
 )
 
 type ClassInfo struct {
@@ -216,7 +218,7 @@ type ClassInfo struct {
 	Properties       PropertiesMap // both instance and static properties are inside. Static properties have "$" prefix
 	Constants        ConstantsMap
 	Mixins           []string
-
+	Cases            CaseMap
 	PackageInfo
 }
 
@@ -224,19 +226,12 @@ func (info *ClassInfo) IsAbstract() bool  { return info.Flags&ClassAbstract != 0
 func (info *ClassInfo) IsFinal() bool     { return info.Flags&ClassFinal != 0 }
 func (info *ClassInfo) IsShape() bool     { return info.Flags&ClassShape != 0 }
 func (info *ClassInfo) IsInterface() bool { return info.Flags&ClassInterface != 0 }
-
-type EnumInfo struct {
-	Pos   ElementPosition
-	Name  string
-	Cases CaseMap
-
-	PackageInfo
-}
+func (info *ClassInfo) IsTrait() bool     { return info.Flags&ClassTrait != 0 }
+func (info *ClassInfo) IsEnum() bool      { return info.Flags&ClassEnum != 0 }
 
 // TODO: rename it; it's not only class-related.
 type ClassParseState struct {
-	Info *Info
-
+	Info                    *Info
 	IsTrait                 bool
 	IsEnum                  bool
 	IsInterface             bool

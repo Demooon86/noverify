@@ -1052,6 +1052,25 @@ type EnumCaseStmt struct {
 	Expr       Node
 }
 
+type EnumMethodStmt struct {
+	Position            *position.Position
+	AttrGroups          []*AttributeGroup
+	Modifiers           []*Identifier
+	FunctionTkn         *token.Token
+	AmpersandTkn        *token.Token
+	MethodName          *Identifier
+	OpenParenthesisTkn  *token.Token
+	Params              []Node
+	SeparatorTkns       []*token.Token
+	CloseParenthesisTkn *token.Token
+	ColonTkn            *token.Token
+	ReturnType          Node
+	Stmt                Node
+	ReturnsRef          bool
+
+	Doc phpdoc.Comment
+}
+
 // ContinueStmt is a `continue $Expr` statement.
 type ContinueStmt struct {
 	Position     *position.Position

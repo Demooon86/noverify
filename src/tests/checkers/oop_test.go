@@ -1357,8 +1357,8 @@ trait AbstractTraitAB {
 `)
 
 	test.Expect = []string{
-		`Class or interface named \T7\UnknownClass does not exist`,
-		`Class or interface named \T6\UnknownIface does not exist`,
+		`Class or interface or enum named \T7\UnknownClass does not exist`,
+		`Class or interface or enum named \T6\UnknownIface does not exist`,
 		`Trait named \T8\UnknownTrait does not exist`,
 
 		`\t1\AB should be spelled \T1\AB`,

@@ -209,7 +209,7 @@ func (d *rootWalker) EnterNode(n ir.Node) (res bool) {
 
 	case *ir.EnumStmt:
 		d.currentClassNodeStack.Push(n)
-		en := d.getEnum()
+		en := d.getClass()
 
 		d.checker.CheckCommentMisspellings(n.EnumName, n.Doc.Raw)
 		d.checker.CheckIdentMisspellings(n.EnumName)
@@ -223,7 +223,7 @@ func (d *rootWalker) EnterNode(n ir.Node) (res bool) {
 
 		d.meta.Enums.Set(d.ctx.st.CurrentClass, en)
 	case *ir.EnumCaseStmt:
-		enum := d.getEnum()
+		enum := d.getClass()
 
 		nm := n.CaseName.Value
 		typ := solver.ExprTypeLocal(d.scope(), d.ctx.st, n.Expr)
@@ -920,7 +920,7 @@ func (d *rootWalker) handleClassDoc(doc classPHPDocParseResult, cl *meta.ClassIn
 	}
 }
 
-func (d *rootWalker) handleEnumDoc(doc classPHPDocParseResult, cl *meta.EnumInfo) {
+func (d *rootWalker) handleEnumDoc(doc classPHPDocParseResult, cl *meta.ClassInfo) {
 	cl.PackageInfo = meta.PackageInfo{
 		Name:     doc.packageName,
 		Internal: doc.internal,
@@ -1392,6 +1392,11 @@ func (d *rootWalker) getClass() meta.ClassInfo {
 			d.meta.Traits = meta.NewClassesMap()
 		}
 		m = d.meta.Traits
+	} else if d.ctx.st.IsEnum {
+		if d.meta.Enums.H == nil {
+			d.meta.Enums = meta.NewClassesMap()
+		}
+		m = d.meta.Enums
 	} else {
 		if d.meta.Classes.H == nil {
 			d.meta.Classes = meta.NewClassesMap()
@@ -1404,6 +1409,10 @@ func (d *rootWalker) getClass() meta.ClassInfo {
 		var flags meta.ClassFlags
 		if d.ctx.st.IsInterface {
 			flags = meta.ClassInterface
+		} else if d.ctx.st.IsEnum {
+			flags = meta.ClassEnum
+		} else if d.ctx.st.IsTrait {
+			flags = meta.ClassTrait
 		}
 
 		cl = meta.ClassInfo{
@@ -1417,32 +1426,13 @@ func (d *rootWalker) getClass() meta.ClassInfo {
 			Methods:          meta.NewFunctionsMap(),
 			Properties:       make(meta.PropertiesMap),
 			Constants:        make(meta.ConstantsMap),
+			Cases:            make(meta.CaseMap),
 		}
 
 		m.Set(d.ctx.st.CurrentClass, cl)
 	}
 
 	return cl
-}
-
-func (d *rootWalker) getEnum() meta.EnumInfo {
-	if d.meta.Enums.H == nil {
-		d.meta.Enums = meta.NewEnumsMap()
-	}
-
-	en, ok := d.meta.Enums.Get(d.ctx.st.CurrentClass)
-
-	if !ok {
-		en = meta.EnumInfo{
-			Pos:   d.getElementPos(d.currentClassNodeStack.Current()),
-			Name:  d.ctx.st.CurrentClass,
-			Cases: make(meta.CaseMap),
-		}
-
-		d.meta.Enums.Set(d.ctx.st.CurrentClass, en)
-	}
-
-	return en
 }
 
 func (d *rootWalker) parseStartPos(pos *position.Position) (startLn []byte, startChar int) {

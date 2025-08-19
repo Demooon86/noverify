@@ -65,7 +65,7 @@ type fileMeta struct {
 	Scope             *meta.Scope
 	Classes           meta.ClassesMap
 	Traits            meta.ClassesMap
-	Enums             meta.EnumsMap
+	Enums             meta.ClassesMap
 	Functions         meta.FunctionsMap
 	Constants         meta.ConstantsMap
 	FunctionOverrides meta.FunctionsOverrideMap

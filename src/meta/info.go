@@ -18,13 +18,13 @@ type Info struct {
 	allFiles                  map[string]bool
 	allTraits                 ClassesMap
 	allClasses                ClassesMap
-	allEnums                  EnumsMap
+	allEnums                  ClassesMap
 	allFunctions              FunctionsMap
 	allConstants              ConstantsMap
 	allFunctionsOverrides     FunctionsOverrideMap
 	perFileTraits             map[string]ClassesMap
 	perFileClasses            map[string]ClassesMap
-	perFileEnums              map[string]EnumsMap
+	perFileEnums              map[string]ClassesMap
 	perFileFunctions          map[string]FunctionsMap
 	perFileConstants          map[string]ConstantsMap
 	internalFunctions         FunctionsMap
@@ -38,13 +38,13 @@ func NewInfo() *Info {
 		allFiles:              make(map[string]bool),
 		allTraits:             NewClassesMap(),
 		allClasses:            NewClassesMap(),
-		allEnums:              NewEnumsMap(),
+		allEnums:              NewClassesMap(),
 		allFunctions:          NewFunctionsMap(),
 		allConstants:          make(ConstantsMap),
 		allFunctionsOverrides: make(FunctionsOverrideMap),
 		perFileTraits:         make(map[string]ClassesMap),
 		perFileClasses:        make(map[string]ClassesMap),
-		perFileEnums:          make(map[string]EnumsMap),
+		perFileEnums:          make(map[string]ClassesMap),
 		perFileFunctions:      make(map[string]FunctionsMap),
 		perFileConstants:      make(map[string]ConstantsMap),
 	}
@@ -150,8 +150,22 @@ func (i *Info) GetClass(nm string) (res ClassInfo, ok bool) {
 	return i.allClasses.Get(nm)
 }
 
-func (i *Info) GetEnum(nm string) (res EnumInfo, ok bool) {
+func (i *Info) GetEnum(nm string) (res ClassInfo, ok bool) {
 	return i.allEnums.Get(nm)
+}
+
+func (i *Info) GetObjectType(nm string) (res ClassInfo, ok bool) {
+	class, ok := i.GetClass(nm)
+
+	if !ok {
+		class, ok = i.GetTrait(nm)
+
+		if !ok {
+			class, ok = i.GetEnum(nm)
+		}
+	}
+
+	return class, ok
 }
 
 func (i *Info) GetTrait(nm string) (res ClassInfo, ok bool) {
@@ -416,7 +430,7 @@ func (i *Info) AddClassesNonLocked(filename string, m ClassesMap) {
 	}
 }
 
-func (i *Info) AddEnumsNonLocked(filename string, m EnumsMap) {
+func (i *Info) AddEnumsNonLocked(filename string, m ClassesMap) {
 	i.perFileEnums[filename] = m
 
 	allEnums := i.allEnums.H

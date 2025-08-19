@@ -125,7 +125,7 @@ class ByNull {
 main();
 `
 
-	l := NewLinter(NewConfig("8.1"))
+	l := NewLinter(NewConfig("8.3"))
 
 	runTest := func(iteration int) {
 		result, err := parseContents(l, "cachetest.php", []byte(code), nil)
@@ -149,7 +149,7 @@ main();
 		//
 		// If cache encoding changes, there is a very high chance that
 		// encoded data lengh will change as well.
-		wantLen := 5952
+		wantLen := 6077
 		haveLen := buf.Len()
 		if haveLen != wantLen {
 			t.Errorf("cache len mismatch:\nhave: %d\nwant: %d", haveLen, wantLen)
@@ -158,7 +158,7 @@ main();
 		// 2. Check cache "strings" hash.
 		//
 		// It catches new fields in cached types, field renames and encoding of additional named attributes.
-		wantStrings := "690e77c94ecdd7878de0bf6f6881d786cf1fafa4588f7905f54d700646c4952aad359008ae2dcddb1c7f29163ecee62355d525672090ac30257bc414f690006f"
+		wantStrings := "001fa814c5d6098a0b65db611d2d9c296698085fa492e5a36b3fb5ce3f10b7f71a3e732f5d6914790948b4da20d91bcc6f751079ac688c00f3584bf177cacd69"
 		haveStrings := collectCacheStrings(buf.String())
 		if haveStrings != wantStrings {
 			t.Errorf("cache strings mismatch:\nhave: %q\nwant: %q", haveStrings, wantStrings)
