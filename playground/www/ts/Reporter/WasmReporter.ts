@@ -8,12 +8,12 @@ class WasmReporter implements IReporter {
     this.wasm = GolangWasmSingleton.getInstance()
   }
 
-  public getReports(code: string): Report[] {
+  public getReports(code: string): LintReport[] {
     if (this.wasm.props.analyzeCallback !== undefined) {
       this.wasm.props.analyzeCallback()
     }
 
-    let reports: Report[]
+    let reports: LintReport[]
 
     try {
       reports = JSON.parse(this.wasm.props.reportsJson)

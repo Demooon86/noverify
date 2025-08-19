@@ -96,7 +96,7 @@ function main() {
     return;
   }
 
-  playground.onAnalyze = (reports: Report[]) => {
+  playground.onAnalyze = (reports: LintReport[]) => {
     console.log(reports)
 
     if (reports.length === 0) {
@@ -115,7 +115,7 @@ function main() {
         x.severity === SeverityType.Notice
     ).length
 
-    const HTMLReportsList = reports.map((report: Report) => reportToHTML(report))
+    const HTMLReportsList = reports.map((report: LintReport) => reportToHTML(report))
     const HTMLReports = HTMLReportsList.join("<br><br>")
 
     const header = `Found ${criticalReports} critical and ${minorReports} minor reports<br><br>`

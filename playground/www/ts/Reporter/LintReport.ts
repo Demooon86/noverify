@@ -18,9 +18,9 @@ class Severity {
 }
 
 /**
- * Report class is responsible for storing one report.
+ * LintReport class is responsible for storing one report.
  */
-class Report {
+class LintReport {
   public message: string = ""
   public check_name: string = ""
   public severity: SeverityType = SeverityType.Notice
@@ -38,9 +38,9 @@ class Report {
 
 /**
  * reportToHTML returns an HTML representation of the report.
- * @param report Report
+ * @param report LintReport
  */
-function reportToHTML(report: Report): string {
+function reportToHTML(report: LintReport): string {
   const docsBaseLink = 'https://github.com/VKCOM/noverify/blob/master/docs/checkers_doc.md#';
   const checkerDoc = docsBaseLink + report.check_name
 

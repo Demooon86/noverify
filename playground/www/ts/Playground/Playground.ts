@@ -4,7 +4,7 @@ class Playground {
   public readonly storage: PlaygroundStorage
   public readonly reporter: IReporter
 
-  public onAnalyze: (reports: Report[]) => void
+  public onAnalyze: (reports: LintReport[]) => void
 
   constructor(
     textArea: HTMLTextAreaElement,
@@ -23,7 +23,7 @@ class Playground {
     options.lint.getAnnotations = (code: string, callback: (reports) => void) => {
       const reports = this.reporter.getReports(code)
       this.onAnalyze(reports)
-      callback(reports.map((report: Report) => {
+      callback(reports.map((report: LintReport) => {
         return {
           message: report.message,
           check_name: report.check_name,

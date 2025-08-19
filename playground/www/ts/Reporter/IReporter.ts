@@ -3,5 +3,5 @@
  * reports for the given code.
  */
 interface IReporter {
-  getReports(code: string): Report[];
+  getReports(code: string): LintReport[];
 }

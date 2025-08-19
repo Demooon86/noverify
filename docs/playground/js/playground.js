@@ -52,7 +52,7 @@ var Severity = /** @class */ (function () {
     return Severity;
 }());
 /**
- * Report class is responsible for storing one report.
+ * LintReport class is responsible for storing one report.
  */
 var Report = /** @class */ (function () {
     function Report(message, check_name, severity, from, to) {
@@ -69,7 +69,7 @@ var Report = /** @class */ (function () {
 }());
 /**
  * reportToHTML returns an HTML representation of the report.
- * @param report Report
+ * @param report LintReport
  */
 function reportToHTML(report) {
     var docsBaseLink = 'https://github.com/VKCOM/noverify/blob/master/docs/checkers_doc.md#';

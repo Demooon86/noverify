@@ -52,10 +52,10 @@ var Severity = /** @class */ (function () {
     return Severity;
 }());
 /**
- * Report class is responsible for storing one report.
+ * LintReport class is responsible for storing one report.
  */
-var Report = /** @class */ (function () {
-    function Report(message, check_name, severity, from, to) {
+var LintReport = /** @class */ (function () {
+    function LintReport(message, check_name, severity, from, to) {
         this.message = "";
         this.check_name = "";
         this.severity = SeverityType.Notice;
@@ -65,19 +65,19 @@ var Report = /** @class */ (function () {
         this.from = from;
         this.to = to;
     }
-    return Report;
+    return LintReport;
 }());
 /**
  * reportToHTML returns an HTML representation of the report.
- * @param report Report
+ * @param report LintReport
  */
 function reportToHTML(report) {
     var docsBaseLink = 'https://github.com/VKCOM/noverify/blob/master/docs/checkers_doc.md#';
     var checkerDoc = docsBaseLink + report.check_name;
     var severity = Severity.getString(report.severity);
-    var checkerName = " <a target=\"_blank\" href=\"" + checkerDoc + "-checker\">" + report.check_name + "</a>: ";
+    var checkerName = " <a target=\"_blank\" href=\"".concat(checkerDoc, "-checker\">").concat(report.check_name, "</a>: ");
     var message = report.message;
-    var reportLine = "\n<a class=\"report-line js-line\" \n    data-line=\"" + (report.from.line + 1) + "\" \n    data-char=\"" + report.from.ch + "\" \n    title=\"Go to line " + (report.from.line + 1) + "\">\n    line " + (report.from.line + 1) + ":" + report.from.ch + "\n</a>";
+    var reportLine = "\n<a class=\"report-line js-line\" \n    data-line=\"".concat(report.from.line + 1, "\" \n    data-char=\"").concat(report.from.ch, "\" \n    title=\"Go to line ").concat(report.from.line + 1, "\">\n    line ").concat(report.from.line + 1, ":").concat(report.from.ch, "\n</a>");
     return severity + checkerName + message + " at " + reportLine;
 }
 /**
@@ -298,7 +298,7 @@ function main() {
         }).length;
         var HTMLReportsList = reports.map(function (report) { return reportToHTML(report); });
         var HTMLReports = HTMLReportsList.join("<br><br>");
-        var header = "Found " + criticalReports + " critical and " + minorReports + " minor reports<br><br>";
+        var header = "Found ".concat(criticalReports, " critical and ").concat(minorReports, " minor reports<br><br>");
         errorsForm.innerHTML = header + HTMLReports;
     };
     configurator.onChange = function () {
