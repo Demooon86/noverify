@@ -231,7 +231,11 @@ func containLinterSuppress(n ir.Node, needInspection string) bool {
 			}
 
 			if part.Name() == "noverify-suppress" {
-				inspection := part.Params[0]
+				inspection := "all"
+
+				if len(part.Params) > 0 {
+					inspection = part.Params[0]
+				}
 
 				if inspection == "all" || inspection == needInspection {
 					return true
@@ -459,6 +463,10 @@ func (b *blockWalker) EnterNode(n ir.Node) (res bool) {
 		s.Walk(b.r)
 		res = false
 	case *ir.ClassStmt:
+		if b.ignoreFunctionBodies {
+			res = false
+		}
+	case *ir.EnumStmt:
 		if b.ignoreFunctionBodies {
 			res = false
 		}
