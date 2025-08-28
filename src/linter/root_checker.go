@@ -379,7 +379,7 @@ func (r *rootChecker) checkUndefinedClass(className string, part phpdoc.CommentP
 		return
 	}
 
-	_, ok := r.info.GetClassOrTrait(className)
+	_, ok := r.info.GetObjectType(className)
 	if ok {
 		return
 	}
